@@ -9,7 +9,7 @@ export default async function handler(req, res) {
     if (!token) return ResponseJson(res, { state: false, message: 'token is null' ,code:403})
     const verify = await VerifyToken(token)
     if (!verify.state) return ResponseJson(res, verify)
-    console.log(verify);
+    // console.log(verify);
     return ResponseJson(res, verify)
 
 }

@@ -5,7 +5,11 @@ module.exports = {
     "./src/Frontend/Components/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
-    extend: {},
+    extend: {
+      fontFamily: {
+        "letter": ['Bilbo Swash Caps', 'cursive']
+      }
+    },
   },
   plugins: [require("daisyui")],
 }
