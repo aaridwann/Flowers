@@ -7,7 +7,7 @@ import Color from "../../Constant/Colors/Color";
 import { FaCartPlus } from "react-icons/fa";
 
 
-const exMenu = ['home', 'products', 'promo', 'signup']
+const exMenu = ['home', 'products', 'promo', 'signup','bayu']
 
 
 function NavbarComponent({ menu }) {

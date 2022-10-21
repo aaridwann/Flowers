@@ -76,7 +76,6 @@ const WaveBg = () => (
 function TopHeaderComponent({ title }) {
     const route = useRouter()
     function back() {
-        console.log(route);
         route.back()
     }
 

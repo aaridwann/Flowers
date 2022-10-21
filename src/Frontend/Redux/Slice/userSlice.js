@@ -1,5 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit'
 
+const jwt = require('jsonwebtoken')
 
 const initialState = {
     state: false,
@@ -15,7 +16,9 @@ export const userSlice = createSlice({
     reducers: {
         addUser: (state, action) => {
             const { payload } = action
-            return ({ state: true, user: payload.user, token: payload.token })
+            const { user, token } = payload
+            // const nextState = {...state,user:user,token:token,state:trur}
+            return ({ ...state, state: true, user: user, token: token })
         },
         removeUser: (state, actions) => {
             return ({ ...state, state: false, user: null, token: null })

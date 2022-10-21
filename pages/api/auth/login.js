@@ -12,6 +12,5 @@ export default async function LoginService(req, res) {
     // console.log(process.message.token)
     setCookie('token', process.message.token, { req, res });
     // deleteCookie('key', { req, res });
-
     return ResponseJson(res, process)
 }

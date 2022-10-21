@@ -9,7 +9,7 @@ function LayoutComponent({ children }) {
         <NavbarComponent />
         {children}
       </main>
-      <BottomTab/>
+      {/* <BottomTab/> */}
     </div>
   );
 }
