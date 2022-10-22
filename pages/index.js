@@ -16,7 +16,6 @@ export default function Home() {
   return (
     <LayoutComponent>
       <HeroComponent />
-
       <main className='w-full flex items-center flex-col p-2 pb-10'>
         <Carousel />
         {menu.promo && <PromoComponent data={menu.promo} />}

@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react'
-import LayoutDahsboard from '../../src/Frontend/Components/LayoutDashboard/LayoutDahsboard'
-import { FaArrowLeft, FaShareAlt, FaHeart, FaCartPlus } from "react-icons/fa";
+import LayoutDashboard from '../../src/Frontend/Components/LayoutDashboard/LayoutDahsboard'
+import { FaArrowLeft, FaShareAlt, FaHeart, FaCartPlus, FaBell, FaCog } from "react-icons/fa";
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import CardTransactionProfileComponent from '../../src/Frontend/Components/Card Transaction Profile/CardTransactionProfile';
 import Color from '../../src/Frontend/Constant/Colors/Color'
-
+import TableOrder from '../../src/Frontend/Components/TableOrder/TableOrder';
 const dummyDashboard = {
     name: 'Lola',
     order: 10,
@@ -52,21 +52,72 @@ const dummyDashboard = {
         },
     ]
 }
+const fakeOrder = [
+    {
+        _id: 1,
+        name: 'melati',
+        img: '',
+        desc: 'lorem',
+        price: 74000,
+        status: 'pending'
+    },
+    {
+        _id: 2,
+        name: 'mawar',
+        img: '',
+        desc: 'lorem',
+        price: 2500000,
+        status: 'On Proccess'
+    },
+    {
+        _id: 3,
+        name: 'duri',
+        img: '',
+        desc: 'lorem',
+        price: 1500000,
+        status: 'On Shipping'
+    },
+    {
+        _id: 4,
+        name: 'sedap malam',
+        img: '',
+        desc: 'lorem',
+        price: 80000,
+        status: 'canceled'
+    },
+
+]
+
+
+
 
 function Dashboard() {
+    const [notifModal, setNotifModal] = useState(false)
     const router = useRouter()
+
+    function openNotif() {
+        setNotifModal(!notifModal)
+    }
+
     function back() {
         router.back()
     }
+
     return (
-        <LayoutDahsboard>
-            <div className='w-full z-[1000] md:w-1/2 mx-auto flex flex-col overflow-hidden '>
-                <TopNavbar back={back} />
+        <LayoutDashboard>
+            <div className='w-full z-[1000] md:w-1/2 mx-auto pb-10 flex flex-col overflow-hidden '>
+                <TopNavbar openNotif={openNotif} back={back} />
                 <CardProfile name={dummyDashboard.name} state={dummyDashboard.state} order={dummyDashboard.order} transaction={dummyDashboard.transaction} loved={dummyDashboard.loved} img={dummyDashboard.img} />
                 <TransactionComponent transactionList={dummyDashboard.transactionList} />
-                <h1>Status</h1>
+                <OrderComponent data={fakeOrder} />
+
+                <button type='button' className='border-2 hover:bg-white/25 duration-300 flex items-center justify-center text-white gap-2 mt-20 w-1/2 self-center py-1 rounded-2xl border-white'>
+                    <p>Settings</p>
+                    <FaCog size={25} color={'white'} />
+                </button>
+                
             </div>
-        </LayoutDahsboard>
+        </LayoutDashboard>
     )
 }
 
@@ -74,16 +125,26 @@ export default Dashboard
 
 
 
-
-function TopNavbar({ back, title }) {
+function OrderComponent({ data }) {
     return (
-        <div className=' w-full px-8 flex items-center mt-4 justify-between'>
+        <div className='w-full px-2 items-center flex flex-col gap-4'>
+            <h1 className="text-white drop-shadow-[0_35px_35px_rgba(0,0,0,0.75)] text-lg">Order Status</h1>
+            <TableOrder dataOrder={data} />
+            <button className=' btn btn-sm btn-accent'>See More</button>
+        </div>
+    )
+}
+
+function TopNavbar({ back, title, openNotif }) {
+    return (
+        <div className=' w-full px-6 flex items-center mt-4 justify-between'>
             <button onClick={back}>
                 <FaArrowLeft size={25} />
             </button>
             <p className=' text-xl font-semibold text-white '>{title || `Rose`}</p>
-            <button>
-                <FaCartPlus size={25} />
+            <button onClick={openNotif}>
+                <span style={{ backgroundColor: Color.cerah }} className=" border-0 absolute indicator-item badge text-white ">9</span>
+                <FaBell size={25} />
             </button>
         </div>
     );
@@ -97,8 +158,8 @@ function CardProfile({ name, state, order, transaction, loved, img }) {
     }, [])
 
     return (
-        <div className={` w-4/5 md:w-3/5 mx-auto flex items-center justify-start flex-col relative h-52 bg-slate-200/75 shadow-2xl rounded-2xl duration-500 ${start ? 'mt-16 rotate-0 ' : ' rotate-45  mt-[2000px]'}   `}>
-            <div className={`w-24 h-24 rounded-full bg-slate-200 absolute -top-12 shadow-lg overflow-hidden delay-200 duration-500 ease-in-out ${start ? 'ml-0' : 'ml-[1000px]'} `}>
+        <div className={`w-4/5 md:w-3/5 mx-auto flex items-center justify-start flex-col relative h-52 bg-[${Color.cerah}] text-white shadow-2xl rounded-b-[20px] rounded-t-[200px] duration-500 ${start ? 'mt-16 rotate-0 ' : ' rotate-45  mt-[2000px]'}   `}>
+            <div className={`w-24 h-24 rounded-full border-8 border-white bg-slate-200 absolute -top-12 shadow-lg overflow-hidden delay-200 duration-500 ease-in-out ${start ? 'ml-0' : 'ml-[1000px]'} `}>
                 <Image src={img || 'https://i.pinimg.com/564x/ac/63/ea/ac63eac1090287a5971a8bdbdc96f1d9.jpg'} alt='avatar' layout='fill' objectFit='cover' />
             </div>
             <p className=' text-3xl mt-14 font-bold '>{name || 'Adriana'}</p>
@@ -122,10 +183,9 @@ function CardProfile({ name, state, order, transaction, loved, img }) {
 }
 
 function TransactionComponent({ transactionList }) {
-    console.log(transactionList);
     return (
-        <>
-            <h1 className={`mt-4 px-8 text-lg text-gray-100 font-semibold`}>Transactions</h1>
+        <div className='flex flex-col w-full'>
+            <h1 style={{ color: Color.cerah }} className={`mt-4 px-8 text-lg font-semibold text-center`}>Transactions</h1>
             <div className=' mt-4 mx-w-11/12 snap-x space-x-4 px-2 h-80 pb-10 flex flex-row overflow-x-scroll scroll-smooth '>
                 {transactionList.map(({ _id, name, img, desc }) => (
                     <div key={_id}>
@@ -133,7 +193,7 @@ function TransactionComponent({ transactionList }) {
                     </div>
                 ))}
             </div>
-        </>
+        </div>
     );
 }
 

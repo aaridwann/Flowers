@@ -2,6 +2,7 @@ import Image from 'next/image';
 import React, { useEffect, useState } from 'react'
 import Color from '../../Constant/Colors/Color';
 import { useRouter } from 'next/router';
+import FilterItemsComponent from '../FilterItems/FilterItems';
 const dummyFilter = ['engagement', 'wedding', 'graduation', 'prewedding', 'gift']
 const fakeHighlight = [
     {
@@ -47,7 +48,7 @@ const fakeHighlight = [
 ]
 
 function HighlightComponent() {
-   
+
     const [filter, setFilter] = useState('')
 
     function Filter() {
@@ -62,18 +63,15 @@ function HighlightComponent() {
 
             {/* === Title === */}
             <div className="divider lg:divider-horizontal">
-                <p>highlight products</p>
+                <p className=' font-letter text-3xl  '>Highlight Products</p>
             </div>
 
             {/* === filter === */}
-            <FilterItems
+            <FilterItemsComponent
                 select={(data) => setFilter(prev => prev == data ? '' : data)}
                 dataFilter={dummyFilter}
                 selectedFilter={filter}
             />
-
-            {/* ! === Highlight === */}
-            {/* <Highlight highlightData={fakeHighlight} /> */}
             <Filter />
         </div>
     )
@@ -82,21 +80,6 @@ function HighlightComponent() {
 
 
 export default HighlightComponent
-function FilterItems({ dataFilter, select, selectedFilter }) {
-    return (
-        <div className='flex w-full gap-2 items-center'>
-            <p className='text-lg'>Filter:</p>
-            <div className='w-full h-16 flex gap-3 items-center overflow-x-auto px-4 snap-x'>
-                {dataFilter.map((data, i) => (
-                    <button onClick={() => select(data)} type='button' style={{ backgroundColor: data == selectedFilter ? Color.second : Color.cerah }} className={`shrink-0 border-none btn-sm btn `} key={i}>
-                        <p className='text-center text-xs text-white'>{data}</p>
-                    </button>
-                ))}
-            </div>
-        </div>
-    );
-}
-
 
 function Highlight({ highlightData }) {
     const router = useRouter()
